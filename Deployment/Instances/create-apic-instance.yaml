@@ -1,0 +1,21 @@
+apiVersion: apiconnect.ibm.com/v1beta1
+kind: APIConnectCluster
+metadata:
+  name: apic
+  namespace: cp4i
+  labels:
+    app.kubernetes.io/instance: apiconnect
+    app.kubernetes.io/managed-by: ibm-apiconnect
+    app.kubernetes.io/name: apiconnect-minimum
+spec:
+  imagePullSecrets:
+    - ibm-entitlement-key
+  imageRegistry: cp.icr.io/cp/apic
+  license:
+    accept: true
+    license: L-RJON-C7BJ42
+    metric: VIRTUAL_PROCESSOR_CORE
+    use: nonproduction
+  profile: n1xc7.m48
+  storageClassName: ibmc-block-gold
+  version: 10.0.4.0

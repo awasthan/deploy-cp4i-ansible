@@ -1,0 +1,68 @@
+apiVersion: mq.ibm.com/v1beta1
+kind: QueueManager
+metadata:
+  name: demo-qm
+  namespace: cp4i
+spec:
+  license:
+    accept: true
+    license: L-RJON-C7QG3S
+    metric: VirtualProcessorCore
+    use: NonProduction
+  queueManager:
+    metrics:
+      enabled: true
+    resources:
+      limits:
+        cpu: 500m
+        memory: 1Gi
+      requests:
+        cpu: 500m
+        memory: 1Gi
+    readinessProbe:
+      failureThreshold: 1
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      successThreshold: 1
+      timeoutSeconds: 3
+    route:
+      enabled: true
+    name: QUICKSTART
+    livenessProbe:
+      failureThreshold: 1
+      initialDelaySeconds: 90
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    imagePullPolicy: IfNotPresent
+    debug: false
+    logFormat: Basic
+    availability:
+      type: SingleInstance
+      updateStrategy: RollingUpdate
+    storage:
+      persistedData:
+        enabled: false
+      queueManager:
+        type: ephemeral
+      recoveryLogs:
+        enabled: false
+  securityContext:
+    initVolumeAsRoot: false
+  template:
+    pod:
+      containers:
+        - env:
+            - name: MQSNOAUT
+              value: 'yes'
+          name: qmgr
+          resources: {}
+  terminationGracePeriodSeconds: 30
+  tracing:
+    agent: {}
+    collector: {}
+    enabled: false
+    namespace: ''
+  version: 9.2.4.0-r1
+  web:
+    enabled: true
